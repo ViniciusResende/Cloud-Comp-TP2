@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: process-dataset-job-viniciusresende
+  namespace: viniciusresende
+spec:
+  ttlSecondsAfterFinished: 3600  # Automatically cleanup after 1 hour
+  template:
+    spec:
+      containers:
+      - name: dataset-processor
+        image: viniciusresende/spotify-fpgrowth:latest
+        command: ["python", "app.py"]
+        volumeMounts:
+        - mountPath: /app/dataset
+          name: dataset-volume
+        - mountPath: /app/output
+          name: output-volume
+      volumes:
+      - name: dataset-volume
+        persistentVolumeClaim:
+          claimName: project2-pvc2-viniciusresende
+      - name: output-volume
+        persistentVolumeClaim:
+          claimName: project2-output-pvc2-viniciusresende
+      restartPolicy: Never
