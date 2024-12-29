@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: dataset-processor
-        image: viniciusresende/spotify-fpgrowth:latest
+        image: viniciusalvesdefaria/spotify-fpgrowth:latest
         command: ["python", "app.py"]
         volumeMounts:
         - mountPath: /app/dataset

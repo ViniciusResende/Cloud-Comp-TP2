@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: file-watcher
-    image: viniciusresende/file-watcher:latest
+    image: viniciusalvesdefaria/file-watcher:latest
     volumeMounts:
     - mountPath: /app/dataset
       name: dataset-volume
