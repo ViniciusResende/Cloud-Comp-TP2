@@ -1,0 +1,39 @@
+name: Triggers Model Job to update association rules on dataset change
+
+on:
+  push:
+    paths:
+      - "data/spotify_dataset.csv"
+
+jobs:
+  trigger-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract Commit Short Hash
+        run: |
+          echo "Retrieving the short hash of the latest commit..."
+          SHORT_HASH=$(git rev-parse --short HEAD)
+          echo "Commit short hash: $SHORT_HASH"
+          echo "HASH=$SHORT_HASH" >> $GITHUB_ENV
+
+      - name: Update Job YAML File
+        run: |
+          echo "Updating the Kubernetes Job YAML file with the commit hash..."
+          FILE_PATH="manifests/model-job.yaml"
+          sed -i -E "s/^  name: process-dataset-job-viniciusresende.*/  name: process-dataset-job-viniciusresende-${{ env.HASH }}/" "$FILE_PATH"
+          echo "File updated successfully."
+
+      - name: Commit and Push Changes
+        env:
+          HASH: ${{ env.HASH }}
+        run: |
+          echo "Preparing to commit the updated YAML file..."
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifests/model-job.yaml
+          git commit -m "Updated Kubernetes Job YAML with hash $HASH"
+          git push
