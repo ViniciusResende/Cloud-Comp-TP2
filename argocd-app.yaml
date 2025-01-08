@@ -1,0 +1,12 @@
+project: viniciusresende-project
+source:
+  repoURL: https://github.com/ViniciusResende/Cloud-Comp-TP2
+  path: ./manifests/
+  targetRevision: HEAD
+destination:
+  server: https://kubernetes.default.svc
+  namespace: viniciusresende
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
