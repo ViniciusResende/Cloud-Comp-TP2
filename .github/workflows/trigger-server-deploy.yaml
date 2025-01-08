@@ -1,0 +1,58 @@
+name: Triggers Server Deploy to update server with the newly added Association Rules
+on:
+  push:
+    paths:
+      - "manifests/model-job.yaml"
+      - "manifests/service.yaml"
+  workflow_run:
+    workflows: ["Triggers Model Job to update association rules on dataset change"]
+    types:
+      - completed
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Waits for association rules update
+        run: sleep 240 # 4 minutes
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract Commit Short Hash
+        run: |
+          echo "Retrieving the short hash of the latest commit..."
+          SHORT_HASH=$(git rev-parse --short HEAD)
+          echo "Commit short hash: $SHORT_HASH"
+          echo "HASH=$SHORT_HASH" >> $GITHUB_ENV
+
+      - name: Modify Kubernetes deployment YAML file
+        run: |
+          YAML_FILE="manifests/deployment.yaml"
+          HASH="${{ steps.get_hash.outputs.hash }}"
+
+          sed -i "s/^  name: playlist-recommender.*/  name: playlist-recommender-${HASH}/" "$YAML_FILE"
+
+      - name: Update Deploy YAML File
+        run: |
+          echo "Updating the Kubernetes Deploy YAML file with the commit hash..."
+          FILE_PATH="manifests/server-deploy.yaml"
+          sed -i -E "s/^  name: song-recommendation-api.*/  name: song-recommendation-api-${{ env.HASH }}/" "$FILE_PATH"
+          echo "File updated successfully."
+
+      - name: Update Environment Variable in Deploy YAML File
+        run: |
+          echo "Updating the Kubernetes Deploy YAML file with the current date..."
+          FILE_PATH="manifests/server-deploy.yaml"
+          CURRENT_DATE=$(date +'%d/%m/%Y')
+          sed -i -E "s/^( *- name: MODEL_LAST_UPDATED_DATE.*value: ).*/\1\"$CURRENT_DATE\"/" "$FILE_PATH"
+          echo "Environment variable MODEL_LAST_UPDATED_DATE updated with date: $CURRENT_DATE"
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifests/deployment.yaml
+          git commit -m "Updated Kubernetes deployment YAML with hash ${{ steps.get_hash.outputs.hash }}"
+          git push
