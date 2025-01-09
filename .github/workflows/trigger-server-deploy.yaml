@@ -27,18 +27,11 @@ jobs:
           echo "Commit short hash: $SHORT_HASH"
           echo "HASH=$SHORT_HASH" >> $GITHUB_ENV
 
-      - name: Modify Kubernetes deployment YAML file
-        run: |
-          YAML_FILE="manifests/server-deploy.yaml"
-          HASH="${{ steps.get_hash.outputs.hash }}"
-
-          sed -i "s/^  name: playlist-recommender.*/  name: playlist-recommender-${HASH}/" "$YAML_FILE"
-
       - name: Update Deploy YAML File
         run: |
           echo "Updating the Kubernetes Deploy YAML file with the commit hash..."
           FILE_PATH="manifests/server-deploy.yaml"
-          sed -i -E "s/^  name: song-recommendation-api.*/  name: song-recommendation-api-${{ env.HASH }}/" "$FILE_PATH"
+          sed -i "s/^  name: song-recommendation-api.*/  name: song-recommendation-api-${{ env.HASH }}/" "$FILE_PATH"
           echo "File updated successfully."
 
       - name: Update Environment Variable in Deploy YAML File
