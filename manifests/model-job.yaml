@@ -4,23 +4,19 @@ metadata:
   name: process-dataset-job-viniciusresende
   namespace: viniciusresende
 spec:
-  ttlSecondsAfterFinished: 3600  # Automatically cleanup after 1 hour
+  ttlSecondsAfterFinished: 3600
   template:
     spec:
       containers:
-      - name: dataset-processor
-        image: viniciusalvesdefaria/spotify-fpgrowth:latest
-        command: ["python", "app.py"]
-        volumeMounts:
-        - mountPath: /app/dataset
-          name: dataset-volume
-        - mountPath: /app/output
-          name: output-volume
-      volumes:
-      - name: dataset-volume
-        persistentVolumeClaim:
-          claimName: project2-pvc2-viniciusresende
-      - name: output-volume
-        persistentVolumeClaim:
-          claimName: project2-output-pvc2-viniciusresende
+        - name: dataset-processor
+          image: viniciusalvesdefaria/spotify-fpgrowth:0.1
+          command: ["sh", "setup.sh"]
+          volumeMounts:
+            - mountPath: /app/output
+              name: persistent-volume
       restartPolicy: Never
+      volumes:
+        - name: persistent-volume
+          persistentVolumeClaim:
+            claimName: project2-pvc2-viniciusresende
+  backoffLimit: 4
