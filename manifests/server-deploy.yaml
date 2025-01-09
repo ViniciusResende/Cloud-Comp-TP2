@@ -21,7 +21,7 @@ spec:
             - name: API_VERSION
               value: "0.2"
             - name: PORT
-              value: 3333
+              value: "3333"
             - name: RULES_FILE_PATH
               value: "/app/data/association_rules.json"
           volumeMounts:
