@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Waits for association rules update
-        run: sleep 240 # 4 minutes
+        run: sleep 20 # 4 minutes
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -39,7 +39,7 @@ jobs:
           echo "Updating the Kubernetes Deploy YAML file with the current date..."
           FILE_PATH="manifests/server-deploy.yaml"
           CURRENT_DATE=$(date +'%d/%m/%Y')
-          sed -i -E "s/^( *- name: MODEL_LAST_UPDATED_DATE.*value: ).*/\1\"$CURRENT_DATE\"/" "$FILE_PATH"
+          sed -i "s/^( *- name: MODEL_LAST_UPDATED_DATE.*value: ).*/\1\"$CURRENT_DATE\"/" "$FILE_PATH"
           echo "Environment variable MODEL_LAST_UPDATED_DATE updated with date: $CURRENT_DATE"
 
       - name: Commit and push changes
