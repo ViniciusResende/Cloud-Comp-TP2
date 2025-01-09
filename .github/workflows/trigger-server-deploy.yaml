@@ -29,7 +29,7 @@ jobs:
 
       - name: Modify Kubernetes deployment YAML file
         run: |
-          YAML_FILE="manifests/deployment.yaml"
+          YAML_FILE="manifests/server-deploy.yaml"
           HASH="${{ steps.get_hash.outputs.hash }}"
 
           sed -i "s/^  name: playlist-recommender.*/  name: playlist-recommender-${HASH}/" "$YAML_FILE"
