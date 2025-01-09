@@ -34,14 +34,6 @@ jobs:
           sed -i "s/^  name: song-recommendation-api.*/  name: song-recommendation-api-${{ env.HASH }}/" "$FILE_PATH"
           echo "File updated successfully."
 
-      - name: Update Environment Variable in Deploy YAML File
-        run: |
-          echo "Updating the Kubernetes Deploy YAML file with the current date..."
-          FILE_PATH="manifests/server-deploy.yaml"
-          CURRENT_DATE=$(date +'%d/%m/%Y')
-          sed -i "/- name: MODEL_LAST_UPDATED_DATE/{n;s/.*/        value: \"$CURRENT_DATE\"/}" "$FILE_PATH"
-          echo "Environment variable MODEL_LAST_UPDATED_DATE updated with date: $CURRENT_DATE"
-
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
