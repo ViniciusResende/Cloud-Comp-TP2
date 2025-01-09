@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: song-recommendation-api
+  namespace: viniciusresende
+  labels:
+    app: song-recommendation-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: song-recommendation-api
+  template:
+    spec:
+      containers:
+        - name: recommender-container
+          image: viniciusalvesdefaria/song-recommendation-api:0.1
+          ports:
+            - containerPort: 3333
+          env:
+            - name: API_VERSION
+              value: "0.1"
+            - name: PORT
+              value: 3333
+            - name: RULES_FILE_PATH
+              value: "/app/data/association_rules.json"
+            - name: MODEL_LAST_UPDATED_DATE
+              value: "08/01/2025"
+          volumeMounts:
+            - mountPath: /app/data
+              name: persistent-volume
+      volumes:
+        - name: persistent-volume
+          persistentVolumeClaim:
+            claimName: project2-pvc2-viniciusresende
