@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: process-dataset-job-viniciusresende
+  name: process-dataset-job-viniciusresende-ecc090e
   namespace: viniciusresende
 spec:
   ttlSecondsAfterFinished: 3600
