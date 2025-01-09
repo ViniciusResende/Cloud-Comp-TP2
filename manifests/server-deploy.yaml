@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: song-recommendation-api-0c1b11d
+  name: song-recommendation-api
   namespace: viniciusresende
   labels:
     app: song-recommendation-api
