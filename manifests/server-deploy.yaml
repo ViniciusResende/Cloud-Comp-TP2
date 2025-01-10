@@ -17,12 +17,12 @@ spec:
     spec:
       containers:
         - name: recommender-container
-          image: viniciusalvesdefaria/song-recommendation-api:0.2
+          image: viniciusalvesdefaria/song-recommendation-api:0.3
           ports:
             - containerPort: 3333
           env:
             - name: API_VERSION
-              value: "0.2"
+              value: "0.3"
             - name: PORT
               value: "3333"
             - name: RULES_FILE_PATH
