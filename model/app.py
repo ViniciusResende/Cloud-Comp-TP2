@@ -17,11 +17,11 @@ te_ary = te.fit(playlists).transform(playlists)
 binary_matrix = pd.DataFrame(te_ary, columns=te.columns_)
 
 # Step 2: Apply FP-Growth
-frequent_itemsets = fpgrowth(binary_matrix, min_support=0.12, use_colnames=True)
+frequent_itemsets = fpgrowth(binary_matrix, min_support=0.07, use_colnames=True)
 rules = association_rules(
   frequent_itemsets, 
   metric="confidence", 
-  min_threshold=0.8, 
+  min_threshold=0.15, 
   num_itemsets=len(frequent_itemsets)
 )
 
