@@ -16,8 +16,8 @@ export function retrieveModelLastUpdatedDate(): string {
       const stats = fs.statSync(filePath);
 
       // Get creation date and format it as dd/mm/yyyy
-      const creationDate = new Date(stats.birthtime);
-      const formattedDate = creationDate
+      const lastModifiedDate = new Date(stats.mtime);
+      const formattedDate = lastModifiedDate
         .toISOString()
         .split('T')[0]
         .split('-')
