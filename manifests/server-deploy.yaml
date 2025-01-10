@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: recommender-container
-          image: viniciusalvesdefaria/song-recommendation-api:0.3
+          image: viniciusalvesdefaria/song-recommendation-api:0.4
           ports:
             - containerPort: 3333
           env:
