@@ -10,10 +10,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-console.log('Current working directory:', process.cwd());
-console.log('RULES_FILE_PATH:', process.env.RULES_FILE_PATH);
-
-
 // Middleware
 app.use(cors()); // Enable CORS
 app.use(json()); // For parsing JSON request bodies
