@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Waits for association rules update
-        run: sleep 20 # 4 minutes
+        run: sleep 240 # 4 minutes
 
       - name: Checkout repository
         uses: actions/checkout@v3
